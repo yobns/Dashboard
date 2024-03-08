@@ -1,0 +1,52 @@
+.iconCloud {
+  font-size: 20px;
+  margin-right: auto;
+  opacity: 0.8;
+}
+
+.dropzone-container {
+  display: flex;
+  align-items: center;
+  border: 1px dashed #001529;
+  color: #001529;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.uploadContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.errorMessage {
+  margin-top: 16px;
+  opacity: 0.8;
+  color: #cc0000;
+}
+
+.uploadButtonContainer {
+  display: grid;
+  justify-content: center;
+  background-color: white;
+  padding: 20px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.fileNameInput {
+  margin: 16px;
+}
+
+.selectedFile {
+  text-align: center;
+  opacity: 0.7;
+  margin-top: 16px;
+}
+
+.uploadButton {
+  margin-left: 12%;
+  border-radius: 12px;
+  width: 75%;
+}

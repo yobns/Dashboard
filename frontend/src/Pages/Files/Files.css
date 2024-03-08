@@ -1,0 +1,15 @@
+.files {
+  padding: 30px;
+}
+
+.filesTitle {
+  margin-bottom: 20px;
+  color: #001529;
+}
+
+.spinner {
+  position: fixed;
+  top: 50%;
+  left: 56%;
+  transform: translate(-50%, -50%);
+}

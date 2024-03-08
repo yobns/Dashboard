@@ -1,0 +1,13 @@
+.loginContainer {
+  background-color: #001628;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.dashboardTitle {
+  color: #FFFFFF;
+  margin-bottom: 20px;
+}

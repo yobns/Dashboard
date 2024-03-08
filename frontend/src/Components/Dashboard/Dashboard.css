@@ -1,0 +1,13 @@
+.sidebar {
+  color: #fff;
+}
+
+.menu-bar {
+  height: 90.1vh;
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1rem;
+  position: relative;
+}

@@ -1,0 +1,53 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #001529;
+  color: #fff;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+}
+
+.user-details {
+  margin-left: 20px;
+  width: 130px;
+}
+
+.user-name {
+  margin: 0;
+  font-weight: bold;
+}
+
+.user-role {
+  margin: 0;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.ant-input {
+  border-radius: 20px;
+}
+
+.ant-input:hover,
+.ant-input:focus {
+  border-color: #181cff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.ant-input-suffix svg {
+  color: #1890ff;
+}
+
+.ant-input-placeholder {
+  color: #ccc;
+}
+
+.ant-input-focused {
+  background-color: #fff;
+}
