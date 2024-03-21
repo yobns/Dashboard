@@ -15,7 +15,7 @@ const login = async (req, res, next) => {
     const isValid = await comparePassword(req.body.password, user.password);
 
     if (isValid) {
-      const tokenObject = jwt.sign({ _id: user._id, role: user.role }, KEY, { expiresIn: "1h" });
+      const tokenObject = jwt.sign({ _id: user._id, role: user.role }, KEY);
       // issueJWT(user);
       res.cookie("token", tokenObject, {
         maxAge: 24 * 60 * 60 * 1000,

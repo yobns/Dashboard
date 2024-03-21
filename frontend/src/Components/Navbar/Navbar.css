@@ -5,6 +5,7 @@
   padding: 10px;
   background-color: #001529;
   color: #fff;
+  position: relative;
 }
 
 .user-info {
@@ -50,4 +51,30 @@
 
 .ant-input-focused {
   background-color: #fff;
+}
+
+.files-slider {
+  position: absolute;
+  top: 52px;
+  left: 10px;
+  width: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.files-slider-item {
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
+}
+
+.files-slider-item:hover {
+  background-color: #f0f0f0;
+}
+
+.hide {
+  display: none;
 }

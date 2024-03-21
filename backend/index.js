@@ -5,7 +5,8 @@ const cors = require("cors");
 const connection = require("./config/database");
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./routes/userRoutes");
-const fileRoutes = require("./routes/fileRoutes")
+const fileRoutes = require("./routes/fileRoutes");
+const structureRoutes = require("./routes/structureRoutes")
 const PORT = process.env.PORT;
 
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(cors({ origin: ["http://localhost:5173"], credentials: true }));
 // Routes
 app.use("/", userRoutes);
 app.use("/file", fileRoutes);
+app.use("/structure", structureRoutes);
 
 // Initialize MongoDB
 async function init() {

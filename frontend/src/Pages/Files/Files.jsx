@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Spin, Table } from "antd";
+import { Button, Modal, Select, Spin, Table } from "antd";
 import axios from "axios";
 import "./Files.css";
 import { useNavigate } from "react-router-dom";
 import {
-  EyeOutlined,
+  PieChartOutlined,
   DownloadOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
 
+const { Option } = Select;
+
 const Files = () => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedCompany, setSelectedCompany] = useState("all");
   const navigate = useNavigate();
-  const role = localStorage.getItem("role");
 
   useEffect(() => {
     fetchFiles();
@@ -56,9 +58,19 @@ const Files = () => {
 
   const showDeleteConfirm = (fileName) => {
     Modal.confirm({
-      title: `Delete File: ${fileName}`,
-      content:
-        "Are you sure you want to delete this file? This action cannot be undone.",
+      title: (
+        <div>
+          <span style={{ color: "#faad14" }}>Delete File: </span>
+          <span>{fileName}</span>
+        </div>
+      ),
+      icon: <DeleteOutlined />,
+      content: (
+        <div>
+          <p>Are you sure ?</p>
+          <p style={{ color: 'grey' }}>This action cannot be undone.</p>
+        </div>
+      ),
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -69,6 +81,14 @@ const Files = () => {
     });
   };
 
+  const filteredFiles = files.filter((file) =>
+    selectedCompany === "all" ? true : file.companyName === selectedCompany
+  );
+
+  const companyOptions = Array.from(new Set(files.map((file) => file.companyName)))
+    .sort()
+    .map((company) => <Option key={company} value={company}>{company}</Option>);
+
   const columns = [
     {
       title: "Name",
@@ -76,7 +96,11 @@ const Files = () => {
       key: "fileName",
     },
     {
-      title: "Action",
+      title: "Company",
+      dataIndex: "companyName",
+      key: "companyName",
+    },
+    {
       key: "action",
       align: "center",
       render: (_, record) => (
@@ -86,7 +110,7 @@ const Files = () => {
             title="View Data"
             onClick={() => navigate(`/data/${record.fileName}`)}
           >
-            <EyeOutlined />
+            <PieChartOutlined />
           </Button>
           <Button
             type="link"
@@ -112,12 +136,25 @@ const Files = () => {
       {loading && <Spin size="large" className="spinner" />}
       <div className="files">
         <h2 className="filesTitle">Files</h2>
+        <Select
+          showSearch
+          style={{ width: 200, marginBottom: 20 }}
+          defaultValue="all"
+          placeholder="Select a company"
+          optionFilterProp="children"
+          onChange={(value) => setSelectedCompany(value)}
+          filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        >
+          <Option value="all">All Companies</Option>
+          {companyOptions}
+        </Select>
+
         {loading ? (
           null
         ) : (
           <Table
             columns={columns}
-            dataSource={files}
+            dataSource={filteredFiles}
             rowKey="_id"
             pagination={{ pageSize: 10 }}
           />

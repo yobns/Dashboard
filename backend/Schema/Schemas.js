@@ -8,15 +8,6 @@ const loginSchema = {
   additionalProperties: false,
 };
 
-const searchSchema = {
-  type: "object",
-  properties: {
-    q: { type: "string" },
-  },
-  required: ["q"],
-  additionalProperties: false,
-};
-
 const signupSchema = {
   type: "object",
   properties: {
@@ -30,4 +21,4 @@ const signupSchema = {
   additionalProperties: false,
 }
 
-module.exports = { loginSchema, searchSchema, signupSchema };
+module.exports = { loginSchema, signupSchema };

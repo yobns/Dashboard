@@ -5,21 +5,20 @@ const fs = require("fs");
 
 const uploadFile = async (req, res) => {
   const workbook = XLSX.read(req.file.buffer, { type: "buffer" });
-  const jsonData = XLSX.utils.sheet_to_json(
-    workbook.Sheets[workbook.SheetNames[0]]
-  );
+  const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
   try {
-    const newFile = new File({
-      jsonData: jsonData,
-      fileName: req.body.customName,
-      fileType: req.file.mimetype,
-      userId: req.body.userId,
-    });
+      const newFile = new File({
+          jsonData: jsonData,
+          fileName: req.body.customName,
+          fileType: req.file.mimetype,
+          userId: req.body.userId,
+          companyName: req.body.companyName,
+      });
 
-    await newFile.save();
-    res.json({ ok: true, fileName: req.body.customName });
+      await newFile.save();
+      res.json({ ok: true, fileName: req.body.customName, companyName: req.body.companyName });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });
   }
 };
 
@@ -38,7 +37,7 @@ const getAllFiles = async (req, res) => {
     let query = {};
     if (req.role !== "admin")
       query.userId = req.body.userId;
-    
+
     const files = await File.find(query);
     res.json(files);
   } catch (error) {
@@ -78,32 +77,10 @@ const deleteFile = async (req, res) => {
   }
 };
 
-const searchFiles = async (req, res) => {
-  try {
-    const query = req.query.q;
-
-    if (!query) {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Missing search query" });
-    }
-
-    const searchResults = await File.find({
-      name: { $regex: new RegExp(query, "i") },
-    });
-
-    res.json({ ok: true, results: searchResults });
-  } catch (error) {
-    console.error("Error in searchProducts:", error);
-    res.status(500).json({ ok: false, message: "Internal Server Error" });
-  }
-};
-
 module.exports = {
   uploadFile,
   getFile,
   getAllFiles,
   exportFile,
   deleteFile,
-  searchFiles,
 };
