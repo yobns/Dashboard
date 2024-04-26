@@ -1,72 +1,66 @@
-import "./Dashboard.css";
-import { Layout, theme } from "antd";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Menu, Button } from "antd";
+import { useState, useMemo } from "react";
+import { Layout, Button, Menu } from "antd";
 import {
   HomeOutlined,
   FileExcelOutlined,
-  UserOutlined,
-  PieChartOutlined,
-  LogoutOutlined,
+  BankOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined
 } from "@ant-design/icons";
-import { useContext, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./Dashboard.css";
 import Logo from "../Logo/Logo";
 import Navbar from "../Navbar/Navbar";
-import { AuthContext } from "../../Context/AuthContext";
 import DashboardContent from "../DashboardContent/DashboardContent";
-import { Content } from "antd/es/layout/layout";
-import { useLocation, useNavigate } from "react-router-dom";
-const { Header, Sider } = Layout;
+
+const { Header, Sider, Content } = Layout;
 
 const Dashboard = () => {
-  const { handleUserLogout } = useContext(AuthContext);
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
   const navigate = useNavigate();
   const location = useLocation();
 
   const getSelectedKey = () => {
     const path = location.pathname;
-    if (path.includes("/files")) return "files";
-    if (path.includes("/data")) return "data";
-    if (path.includes("/account")) return "account";
-    return "home";
+    return path.includes("/files")
+      ? "Files"
+      : path.includes("/companies")
+      ? "Companies"
+      : path.includes("/account")
+      ? "Account"
+      : "Home";
   };
 
-  const menuItems = [
-    {
-      key: "home",
-      icon: <HomeOutlined />,
-      label: "Home",
-      onClick: () => navigate("/"),
-    },
-    {
-      key: "files",
-      icon: <FileExcelOutlined />,
-      label: "Files",
-      onClick: () => navigate("/files"),
-    },
-    {
-      key: "data",
-      icon: <PieChartOutlined />,
-      label: "Data",
-      onClick: () => navigate("/data"),
-    },
-    {
-      key: "account",
-      icon: <UserOutlined />,
-      label: "Account",
-      onClick: () => navigate("/account"),
-    },
-    {
-      key: "logout",
-      icon: <LogoutOutlined />,
-      label: "Logout",
-      onClick: handleUserLogout,
-    },
-  ];
+  const menuItems = useMemo(
+    () => [
+      {
+        key: "Home",
+        icon: <HomeOutlined />,
+        label: "Home",
+        onClick: () => navigate("/"),
+      },
+      {
+        key: "Files",
+        icon: <FileExcelOutlined />,
+        label: "Files",
+        onClick: () => navigate("/files"),
+      },
+      {
+        key: "Companies",
+        icon: <BankOutlined />,
+        label: "Companies",
+        onClick: () => navigate("/companies"),
+      },
+      {
+        key: "Account",
+        icon: <UserOutlined />,
+        label: "Account",
+        onClick: () => navigate("/account"),
+      },
+    ],
+    [navigate]
+  );
 
   return (
     <Layout>
@@ -78,7 +72,7 @@ const Dashboard = () => {
       >
         <Logo />
         <Menu
-          theme={"dark"}
+          theme="dark"
           className="menu-bar"
           selectedKeys={[getSelectedKey()]}
           items={menuItems}
@@ -86,13 +80,16 @@ const Dashboard = () => {
       </Sider>
       <Layout>
         <Navbar />
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            className="toggle"
-            onClick={() => setCollapsed(!collapsed)}
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-          />
+        <Header style={{ padding: 0, background: "var(--color-bg-container)" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Button
+              type="text"
+              className="toggle"
+              onClick={() => setCollapsed(!collapsed)}
+              icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            />
+            <h1 className="pageName">{getSelectedKey()}</h1>
+          </div>
         </Header>
         <Content>
           <DashboardContent />

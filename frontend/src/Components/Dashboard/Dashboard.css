@@ -3,11 +3,23 @@
 }
 
 .menu-bar {
-  height: 90.1vh;
+  height: 92.89vh;
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
   gap: 15px;
   font-size: 1rem;
   position: relative;
+}
+
+.pageName {
+  all: unset;
+  margin-left: 30px;
+  color: #001529;
+}
+
+@media screen and (max-height: 1080px) {
+  .menu-bar {
+    height: 90.1vh;
+  }
 }

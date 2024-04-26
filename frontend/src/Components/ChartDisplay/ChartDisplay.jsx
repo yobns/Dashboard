@@ -1,28 +1,46 @@
-import { Table } from "antd";
-import "./ChartDisplay.css";
+import { useState, useEffect } from "react";
+import { Modal, Table } from "antd";
 
-const ChartDisplay = ({ jsonData }) => {
-  const chartData = jsonData.map((item, index) => ({
-    key: index + 1,
-    label: `Data ${index + 1}`,
-    ...Object.keys(item).reduce((acc, key) => {
-      if (key !== "label") {
-        acc[key] = item[key];
-      }
-      return acc;
-    }, {}),
-  }));
+const ChartDisplay = ({ jsonData, fileName }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const columns = Object.keys(chartData[0] || {}).map((key) => ({
-    title: key,
-    dataIndex: key,
-    key,
-  }));
+  useEffect(() => {
+    if (jsonData) setIsModalVisible(true);
+  }, [jsonData]);
+
+  let adjustedData = [];
+  if (Array.isArray(jsonData)) {
+    adjustedData = jsonData.slice(1).map((item) => ({
+      key: Object.values(item).join("-"),
+      ...Object.keys(item).reduce((acc, key) => {
+        if (key !== "label") acc[key] = item[key];
+        return acc;
+      }, {}),
+    }));
+  }
+
+  const columns = Object.keys(adjustedData[0] || {})
+    .filter((key) => key !== "key")
+    .map((key) => ({
+      title: key,
+      dataIndex: key,
+      key,
+    }));
 
   return (
-    <div>
-      <Table dataSource={chartData} columns={columns} />
-    </div>
+    <Modal
+      title={fileName}
+      open={isModalVisible}
+      onCancel={() => setIsModalVisible(false)}
+      width={1000}
+      footer={null}
+    >
+      {Array.isArray(jsonData) ? (
+        <Table dataSource={adjustedData} columns={columns} />
+      ) : (
+        <p>No data available</p>
+      )}
+    </Modal>
   );
 };
 

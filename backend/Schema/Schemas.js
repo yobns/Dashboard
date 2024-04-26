@@ -11,7 +11,10 @@ const loginSchema = {
 const signupSchema = {
   type: "object",
   properties: {
-    email: { type: "string", pattern: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$" },
+    email: {
+      type: "string",
+      pattern: "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$",
+    },
     password: { type: "string", minLength: 6 },
     firstName: { type: "string", minLength: 1 },
     lastName: { type: "string", minLength: 1 },
@@ -19,6 +22,6 @@ const signupSchema = {
   },
   required: ["email", "password", "firstName", "lastName", "role"],
   additionalProperties: false,
-}
+};
 
 module.exports = { loginSchema, signupSchema };

@@ -40,8 +40,7 @@ const login = async (req, res, next) => {
 const signup = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.email });
-    if (user)
-      return res.status(400).send("User already exists");
+    if (user) return res.status(400).send("User already exists");
 
     user = new User({
       email: req.body.email,
@@ -51,14 +50,16 @@ const signup = async (req, res) => {
       role: req.body.role,
     });
     await user.save();
-    return res.status(201).send({ ok: true, message: "User created successfully" });
+    return res
+      .status(201)
+      .send({ ok: true, message: "User created successfully" });
   } catch (error) {
     console.error(error);
     return res.status(500).send("Error creating the user");
   }
-}
+};
 
-async function update(req, res) {
+const update = async (req, res) => {
   const userId = req.params.id;
   const { email, password, firstName, lastName } = req.body;
   try {
@@ -85,9 +86,9 @@ async function update(req, res) {
     if (error.code === 11000) res.status(409).send("Email already exist");
     else res.status(500).send("Update error");
   }
-}
+};
 
-async function getUserInfos(req, res) {
+const getUserInfos = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
     if (!user) return res.status(404).send("User not found");
@@ -96,9 +97,9 @@ async function getUserInfos(req, res) {
   } catch (error) {
     res.status(500).send("Server error");
   }
-}
+};
 
-async function getAllUsers(req, res) {
+const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).select("-password");
     res.json(users);
@@ -106,14 +107,14 @@ async function getAllUsers(req, res) {
     console.error(error);
     res.status(500).send(error);
   }
-}
+};
 
 const logout = async (req, res) => {
   try {
     const { token } = req.cookies;
 
     if (token) {
-      res.clearCookie("token", { expires: new Date(0) });
+      res.clearCookie("token");
     }
 
     res.send({ ok: true });

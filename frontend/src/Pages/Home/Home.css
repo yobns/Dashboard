@@ -1,6 +1,38 @@
 .dashboard-container {
-    width: 60%;
-    margin: auto;
-    margin-top: 30px;
-    padding: 20px;
+  width: 60%;
+  margin: auto;
+  margin-top: 30px;
+  padding: 20px;
+}
+
+.circle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20%;
+  margin-top: 150px;
+  text-align: center;
+}
+
+.circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #00162849;
+  color: white;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.circle:hover {
+  background-color: #001628;
+}
+
+.circle-text {
+  margin-top: 5px;
+  font-weight: 450;
 }

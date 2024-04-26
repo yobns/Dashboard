@@ -1,7 +1,4 @@
-import { createContext, useState } from "react";
-import { Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import "./AuthContext.css";
+import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -13,14 +10,37 @@ export const AuthProvider = ({ children }) => {
     !!localStorage.getItem("token")
   );
   const navigate = useNavigate();
+  const apiClient = axios.create({
+    baseURL: import.meta.env.VITE_SERVER_URL,
+    withCredentials: true,
+  });
+
+  const handleError = (error) => {
+    if (error.response && error.response.status === 401) {
+      handleUserLogout();
+    }
+    console.error("Error during request:", error);
+  };
+
+  useEffect(() => {
+    apiClient.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        handleError(error);
+        return Promise.reject(error);
+      }
+    );
+
+    return () => {
+      apiClient.interceptors.response.eject(0);
+    };
+  }, []);
 
   const handleUserLogout = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_SERVER_URL}/logout`, {
-        withCredentials: true,
-      });
+      await apiClient.get("/logout");
     } catch (error) {
-      console.error("Error during logout:", error);
+      handleError(error);
     } finally {
       localStorage.clear();
       setIsUserLoggedIn(false);
@@ -33,13 +53,7 @@ export const AuthProvider = ({ children }) => {
     const userData = { email, password };
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_SERVER_URL}/login`,
-        userData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await apiClient.post("/login", userData);
 
       if (response.data.ok) {
         const { token, user } = response.data;
@@ -52,63 +66,18 @@ export const AuthProvider = ({ children }) => {
         navigate("/");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      handleError(error);
       setErrorMessage("Invalid email or password");
     }
   };
-
-  const LoginForm = (
-    <Form className="LogInForm" onFinish={handleSubmitLogin}>
-      <div className="login-container">
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your email",
-            },
-          ]}
-        >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            type="email"
-            placeholder="Enter email"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please enter your password",
-            },
-          ]}
-        >
-          <Input.Password
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            placeholder="Password"
-          />
-        </Form.Item>
-
-        <div>
-          {errorMessage && (
-            <div className="text-danger mb-1 error-wrapper">{errorMessage}</div>
-          )}
-          <Button type="primary" htmlType="submit" className="buttonModal mt-3">
-            Log In
-          </Button>
-        </div>
-      </div>
-    </Form>
-  );
 
   return (
     <AuthContext.Provider
       value={{
         isUserLoggedIn,
         handleUserLogout,
-        LoginForm,
+        handleSubmitLogin,
+        errorMessage,
       }}
     >
       {children}

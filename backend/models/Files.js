@@ -1,29 +1,33 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const fileSchema = new Schema({
-  jsonData: {
-    type: Object,
-    required: true,
+const fileSchema = new Schema(
+  {
+    jsonData: {
+      type: Object,
+      required: true,
+    },
+    companyName: {
+      type: String,
+      required: true,
+    },
+    fileName: {
+      type: String,
+      required: true,
+    },
+    fileType: {
+      type: String,
+      required: true,
+    },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+    selectedHeaders: { type: [String], required: true },
   },
-  companyName: {
-    type: String,
-    required: true,
-  },
-  fileName: {
-    type: String,
-    required: true,
-  },
-  fileType: {
-    type: String,
-    required: true,
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'User'
-  },
-});
+  { timestamps: true }
+);
 
 const File = mongoose.model("File", fileSchema);
 

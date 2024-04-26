@@ -57,7 +57,7 @@
   position: absolute;
   top: 52px;
   left: 10px;
-  width: 200px;
+  width: 300px;
   max-height: 300px;
   overflow-y: auto;
   background-color: #fff;
@@ -71,10 +71,20 @@
   transition: background-color 0.3s ease;
 }
 
-.files-slider-item:hover {
+.files-slider-item a {
+  color: black;
+}
+
+.files-slider-item:hover,
+.files-slider-item a:hover {
   background-color: #f0f0f0;
+  color: grey;
 }
 
 .hide {
   display: none;
+}
+
+.avatar-hover {
+  cursor: pointer;
 }

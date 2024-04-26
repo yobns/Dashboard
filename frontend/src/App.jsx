@@ -6,7 +6,8 @@ import Files from "./Pages/Files/Files";
 import Dashboard from "./Components/Dashboard/Dashboard";
 import Home from "./Pages/Home/Home";
 import Account from "./Pages/Account/Account";
-import Data from "./Pages/Data/Data";
+import Companies from "./Pages/Companies/Companies";
+import NotFound from "./Pages/NotFound/NotFound";
 
 function App() {
   return (
@@ -23,10 +24,11 @@ function App() {
           >
             <Route path="/" element={<Home />} />
             <Route path="/files" element={<Files />} />
-            <Route path="/data" element={<Data />} />
-            <Route path="/data/:fileName" element={<Data />} />
+            <Route path="/files/:fileName" element={<Files />} />
+            <Route path="/companies" element={<Companies />} />
             <Route path="/account" element={<Account />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </Router>
